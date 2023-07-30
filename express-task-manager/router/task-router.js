@@ -10,6 +10,7 @@ taskRouter.get('/', (req, res) => {
     res.status(200).json(tasksData);
 })
 
+// [Status: ✅]
 taskRouter.get('/:id', (req, res) => {
     const id = req.params.id;
     if(!validator.checkId(id)) {
@@ -18,7 +19,8 @@ taskRouter.get('/:id', (req, res) => {
         });
     } else {
         const task = tasksData.filter((task) => task.id == id);
-        if(task !== undefined || task.length !== 0) {
+        const taskIndex = tasksData.indexOf(task[0]);
+        if(taskIndex !== -1) {
             res.status(200).json(task);
         } else {
             res.status(404).json({
@@ -57,6 +59,7 @@ taskRouter.put('/:id', (req, res) => {
 
 })
 
+// [Status: ✅]
 taskRouter.delete('/:id', (req, res) => {
     const id = req.params.id;
     if(!validator.checkId(id)) {
@@ -65,11 +68,11 @@ taskRouter.delete('/:id', (req, res) => {
         })
     } else {
         const task = tasksData.filter((task) => task.id == id);
-        if(task !== undefined || task.length !== 0) {
-            const taskIndex = tasksData.indexOf(task[0]);
+        const taskIndex = tasksData.indexOf(task[0]);
+        if(taskIndex !== -1) {
             tasksData.splice(taskIndex, 1);
             fs.writeFileSync('./data.json', JSON.stringify(tasksData));
-            res.status(204).json({
+            res.status(200).json({
                 "message": "Task deleted successfully"
             })
         } else {
