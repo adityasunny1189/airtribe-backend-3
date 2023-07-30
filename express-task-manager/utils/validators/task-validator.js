@@ -30,6 +30,10 @@ class TaskValidator {
     checkTaskDuplicateId(task, tasks) {
         return tasks.filter((t) => t.id == task.id).length == 0;
     }
+
+    isIdPresent(id, tasks) {
+        return tasks.filter((t) => t.id == id).length == 0;
+    }
 }
 
 module.exports = TaskValidator;

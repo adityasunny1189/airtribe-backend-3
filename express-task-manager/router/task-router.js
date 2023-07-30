@@ -55,8 +55,35 @@ taskRouter.post('/', (req, res) => {
     }
 })
 
+// [Status: ✅]
 taskRouter.put('/:id', (req, res) => {
-
+    const updatedTask = req.body;
+    const updatedTaskId = req.params.id;
+    if(!validator.checkId(updatedTaskId)) {
+        res.status(404).json({
+            "message": "Invalid task id"
+        });
+    } else if(!validator.checkTaskReqBody(updatedTask)) {
+        res.status(404).json({
+            "message": "Invalid task body"
+        });
+    } else {
+        const oldTaskData = tasksData.filter((task) => task.id == updatedTaskId);
+        const taskIndex = tasksData.indexOf(oldTaskData[0]);
+        if(taskIndex !== -1) {
+            
+            tasksData[taskIndex] = updatedTask;
+            fs.writeFileSync('./data.json', JSON.stringify(tasksData));
+            res.status(200).json({
+                "message": "updated task data",
+                "task": updatedTask
+            })
+        } else {
+            res.status(404).json({
+                "message": "Task not found"
+            })
+        }
+    }
 })
 
 // [Status: ✅]
