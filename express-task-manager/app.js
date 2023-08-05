@@ -4,7 +4,13 @@ const taskRouter = require('./router/task-router');
 
 const app = express();
 
+function logger(req, res, next) {
+    console.log("Request received at: ", req.method, req.url, " from ", req.ip);
+    next();
+}
+
 app.use(bodyParser.json());
+app.use(logger);
 
 const PORT = 3000;
 
