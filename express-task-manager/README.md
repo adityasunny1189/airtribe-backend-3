@@ -46,3 +46,111 @@ Implement an endpoint to retrieve tasks based on priority level: GET /tasks/prio
 ### Postman Collections:
 
 https://api.postman.com/collections/10462467-cf287b10-3ca0-4051-aa53-6e5394eb7fb7?access_key=PMAT-01H720RZEHC2QW0QKW87FNK896
+
+### API Response
+
+1. Get all tasks
+
+```
+[
+    {
+        "id": 1,
+        "title": "New Test Task",
+        "description": "Working fine",
+        "flag": "completed"
+    },
+    {
+        "id": 2,
+        "title": "Updated the task",
+        "description": "Working fine",
+        "flag": "pending"
+    }
+]
+```
+
+2. Get task by id
+
+```
+[
+    {
+        "id": 2,
+        "title": "Updated the task",
+        "description": "Working fine",
+        "flag": "pending"
+    }
+]
+```
+or
+```
+{
+    "message": "Task not found for this ID"
+}
+```
+
+3. Create a new task
+
+body:
+```
+{
+    "id": 2,
+    "title": "New Test Task",
+    "description": "Working fine",
+    "flag": "completed"
+}
+```
+
+```
+{
+    "message": "Task id already present",
+    "task": {
+        "id": 2,
+        "title": "New Test Task",
+        "description": "Working fine",
+        "flag": "completed"
+    }
+}
+```
+
+4. Update a task
+
+body:
+```
+{
+    "id": 2,
+    "title": "Updated the task",
+    "description": "Working fine",
+    "flag": "pending"
+}
+```
+
+```
+{
+    "message": "updated task data",
+    "task": {
+        "id": 2,
+        "title": "Updated the task",
+        "description": "Working fine",
+        "flag": "pending"
+    }
+}
+```
+or
+```
+{
+    "message": "Task not found"
+}
+```
+
+5. Delete a task
+
+```
+{
+    "message": "Task deleted successfully"
+}
+```
+or
+```
+{
+    "message": "Invalid Id"
+}
+```
