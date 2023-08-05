@@ -101,6 +101,18 @@ body:
 
 ```
 {
+    "message": "Task created successfully",
+    "task": {
+        "id": 3,
+        "title": "New Test Task 3",
+        "description": "Working fine and good",
+        "flag": "completed"
+    }
+}
+```
+or
+```
+{
     "message": "Task id already present",
     "task": {
         "id": 2,
