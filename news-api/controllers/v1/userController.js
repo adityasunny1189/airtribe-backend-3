@@ -88,7 +88,36 @@ const GetUserPreferences = (req, res) => {
 }
 
 const UpdateUserPreferences = (req, res) => {
-    res.send('Update User Preferences');
+    let preferences = req.body.preferences;
+    console.log("user: ", req.user, " prefer: ", preferences);
+    if(req.user && preferences) {
+        User.findOneAndUpdate({
+            _id: req.user.id
+        }, {
+            preferences: preferences
+        }).then(user => {
+            if(!user) {
+                res.status(404).send({
+                    message: "user not found"
+                })
+            }
+            res.status(200).send({
+                message: "user preferences updated"
+            })
+        }).catch(err => {
+            res.status(500).send({
+                message: err
+            })
+        })
+    } else {
+        if(req.message) {
+            res.status(401).send(res.message)
+        } else {
+            res.status(500).send({
+                message: "invalid token"
+            })
+        }
+    }
 }
 
 const GetNews = async (req, res) => {
