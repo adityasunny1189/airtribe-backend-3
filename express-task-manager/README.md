@@ -43,10 +43,6 @@ Allow users to assign a priority level (e.g., low, medium, high) to each task. U
 
 Implement an endpoint to retrieve tasks based on priority level: GET /tasks/priority/:level.
 
-### Postman Collections:
-
-https://api.postman.com/collections/10462467-cf287b10-3ca0-4051-aa53-6e5394eb7fb7?access_key=PMAT-01H720RZEHC2QW0QKW87FNK896
-
 ### API Response
 
 1. Get all tasks
