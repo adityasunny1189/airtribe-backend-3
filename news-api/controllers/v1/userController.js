@@ -89,7 +89,6 @@ const GetUserPreferences = (req, res) => {
 
 const UpdateUserPreferences = (req, res) => {
     let preferences = req.body.preferences;
-    console.log("user: ", req.user, " prefer: ", preferences);
     if(req.user && preferences) {
         User.findOneAndUpdate({
             _id: req.user.id
@@ -121,29 +120,49 @@ const UpdateUserPreferences = (req, res) => {
 }
 
 const GetNews = async (req, res) => {
-    const country = req?.country || 'in';
-    const category = req?.category || 'general';
-    const url = `${BASE_URL}?country=${country}&category=${category}&apiKey=${process.env.NEWS_API_KEY}`;
-    try {
-        let news = await getNews(url);
-        res.status(200).send(news);
-    } catch (err) {
-        res.status(500).send(err);
+    if(req.user) {
+        const country = req?.country || 'in';
+        const category = req?.category || 'general';
+        const url = `${BASE_URL}?country=${country}&category=${category}&apiKey=${process.env.NEWS_API_KEY}`;
+        try {
+            let news = await getNews(url);
+            res.status(200).send(news);
+        } catch (err) {
+            res.status(500).send(err);
+        }
+    } else {
+        if(req.message) {
+            res.status(401).send(res.message)
+        } else {
+            res.status(500).send({
+                message: "invalid token"
+            })
+        }
     }
 }
 
 // or
 
 const GetNewsPromise = (req, res) => {
-    const country = req?.country || 'in';
-    const category = req?.category || 'general';
-    const url = `${BASE_URL}?country=${country}&category=${category}&apiKey=${process.env.NEWS_API_KEY}`;
-    let news =  getNews(url);
-    news.then(data => {
-        res.status(200).send(news);
-    }).catch(err => {
-        res.status(500).send(err);
-    })
+    if(req.user) {
+        const country = req?.country || 'in';
+        const category = req?.category || 'general';
+        const url = `${BASE_URL}?country=${country}&category=${category}&apiKey=${process.env.NEWS_API_KEY}`;
+        let news =  getNews(url);
+        news.then(data => {
+            res.status(200).send(news);
+        }).catch(err => {
+            res.status(500).send(err);
+        })
+    } else {
+        if(req.message) {
+            res.status(401).send(res.message)
+        } else {
+            res.status(500).send({
+                message: "invalid token"
+            })
+        }
+    }
 }
 
 module.exports = {
