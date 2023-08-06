@@ -72,9 +72,19 @@ const LoginUser = (req, res) => {
 }
 
 const GetUserPreferences = (req, res) => {
-    res.status(200).send({
-        preferences: req.user.preferences
-    });
+    if(req.user) {
+        res.status(200).send({
+            preferences: req.user.preferences
+        });
+    } else {
+        if(req.message) {
+            res.status(401).send(res.message)
+        } else {
+            res.status(500).send({
+                message: "invalid token"
+            })
+        }
+    }
 }
 
 const UpdateUserPreferences = (req, res) => {

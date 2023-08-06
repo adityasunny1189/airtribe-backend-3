@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const v1Router = require('./routers/v1/userRouter');
 const Logger = require('./middlewares/logger');
 
-mongoose.connect("mongodb://localhost:27017/usersdb", {
+mongoose.connect("mongodb://localhost:27017/userdb", {
     useUnifiedTopology: true,
     useNewUrlParser: true
 }).then((data) => {
