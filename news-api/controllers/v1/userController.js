@@ -1,6 +1,7 @@
 const getNews = require('../../helpers/utils/news');
 const User = require('../../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const BASE_URL = 'https://newsapi.org/v2/top-headlines';
 
@@ -26,11 +27,54 @@ const RegisterUser = (req, res) => {
 }
 
 const LoginUser = (req, res) => {
-    res.send('Login User');
+    let email = req.body.email;
+    let password = req.body.password;
+
+    User.findOne({
+        email: email
+    }).then(user => {
+        if(!user) {
+            res.status(404).send({
+                message: "user not found"
+            });
+        }
+
+        let isPasswordValid = bcrypt.compareSync(password, user.password);
+        if(!isPasswordValid) {
+            res.status().send({
+                accessToken: null,
+                message: "Password Incorrect"
+            });
+        }
+
+        let token = jwt.sign({
+            id: user.id
+        }, process.env.SECRET_KEY, {
+            expiresIn: 84000
+        });
+
+        res.status(200).send({
+            user: {
+                id: user.id,
+                email: user.email,
+                fullName: user.fullName
+            },
+            message: "Login Sucessful",
+            accessToken: token
+        });
+    }).catch(err => {
+        if(err) {
+            res.status(500).send({
+                message: err
+            });
+        }
+    })
 }
 
 const GetUserPreferences = (req, res) => {
-    res.send('User Preferences');
+    res.status(200).send({
+        preferences: req.user.preferences
+    });
 }
 
 const UpdateUserPreferences = (req, res) => {
