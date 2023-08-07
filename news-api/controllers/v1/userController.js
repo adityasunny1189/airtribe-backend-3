@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const BASE_URL = 'https://newsapi.org/v2/top-headlines';
+const SEARCH_BASE_URL = 'https://newsapi.org/v2/everything';
 
 const RegisterUser = (req, res) => {
     let user = new User({
@@ -132,7 +133,9 @@ const GetNews = async (req, res) => {
         }
     } else {
         if(req.message) {
-            res.status(401).send(res.message)
+            res.status(401).send({
+                message: req.message
+            })
         } else {
             res.status(500).send({
                 message: "invalid token"
@@ -156,7 +159,33 @@ const GetNewsPromise = (req, res) => {
         })
     } else {
         if(req.message) {
-            res.status(401).send(res.message)
+            res.status(401).send({
+                message: req.message
+            })
+        } else {
+            res.status(500).send({
+                message: "invalid token"
+            })
+        }
+    }
+}
+
+const SearchNews = async (req, res) => {
+    if(req.user) {
+        const url = `${SEARCH_BASE_URL}?q=${req.params.keyword}&apiKey=${process.env.NEWS_API_KEY}`;
+        try {
+            let news = await getNews(url);
+            res.status(200).send(news);
+        } catch (error) {
+            res.status(500).send({
+                message: error
+            });
+        }
+    } else {
+        if(req.message) {
+            res.status(401).send({
+                message: req.message
+            })
         } else {
             res.status(500).send({
                 message: "invalid token"
@@ -170,5 +199,6 @@ module.exports = {
     LoginUser,
     GetUserPreferences,
     UpdateUserPreferences,
-    GetNews
+    GetNews,
+    SearchNews
 }

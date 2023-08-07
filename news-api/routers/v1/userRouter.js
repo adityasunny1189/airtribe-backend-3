@@ -8,5 +8,6 @@ userRouter.post('/login', userController.LoginUser);
 userRouter.get('/preferences', verifyToken, userController.GetUserPreferences);
 userRouter.put('/preferences', verifyToken, userController.UpdateUserPreferences);
 userRouter.get('/news', verifyToken, userController.GetNews);
+userRouter.get('/news/search/:keyword', verifyToken, userController.SearchNews);
 
 module.exports = userRouter;
