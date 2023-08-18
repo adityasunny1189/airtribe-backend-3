@@ -163,6 +163,15 @@ const GetNews = async (req, res) => {
     }
 }
 
+const AutoUpdateNews = async () => {
+    try {
+        let news = await getNews(url);
+        redisClient.setEx('news', DEFAULT_EXPIRY_TIME, JSON.stringify(news));
+    } catch (err) {
+        console.log("Error while calling news api: ", err);
+    }
+}
+
 // NOTE: Or use this without async await, here the value returned is a promise while when we use async await then the resolved or rejected value is directly returned
 
 // const GetNewsPromise = (req, res) => {
@@ -229,5 +238,6 @@ module.exports = {
     GetUserPreferences,
     UpdateUserPreferences,
     GetNews,
-    SearchNews
+    SearchNews,
+    AutoUpdateNews
 }
