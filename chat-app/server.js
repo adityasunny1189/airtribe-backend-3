@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 
-const PORT = 3001;
+const PORT = 5000;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -12,7 +12,7 @@ server.on('connection', (socket) => {
     console.log("A user connected");
 
     socket.on('joinRoom', ({ username, roomId }) => {
-        
+
     });
 
     socket.on('sendMessage', () => {
