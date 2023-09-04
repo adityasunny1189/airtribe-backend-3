@@ -19,6 +19,10 @@ const addUser = (socketId, username, roomId) => {
     return newUser;
 }
 
+const getUser = (socketId) => {
+    return users.filter(usr => usr.socketId == socketId);
+}
+
 server.on('connection', (socket) => {
     console.log("A user connected");
 
@@ -50,9 +54,10 @@ server.on('connection', (socket) => {
         let user = getUser(socket.id);
         if(user) {
             io.to(user.roomId).emit('message', `${user.username} has left the room`);
+            // remove user from users
         }
     });
-    
+
 });
 
 
